@@ -14,7 +14,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class JsScheduleModifier() : ScheduleModifier {
     override suspend fun modify(schedule: DroidKaigiSchedule): DroidKaigiSchedule {
         Logger.d("Hello JS world!")
-        return schedule.copy(
+        Logger.v("Trying to modify $schedule")
+        val modified = schedule.copy(
             dayToTimetable = schedule.dayToTimetable.mapValues { timetable ->
                 val modifiedSessions = timetable.value.timetableItems.map { timetableItem ->
                     timetableItem.modified()
@@ -26,6 +27,8 @@ class JsScheduleModifier() : ScheduleModifier {
                 )
             }.toPersistentMap()
         )
+        Logger.v("Modified $modified")
+        return modified
     }
 }
 
