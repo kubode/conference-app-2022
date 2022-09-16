@@ -25,7 +25,7 @@ class SessionsZipline @Inject constructor(
     private val executorService = Executors.newSingleThreadExecutor { Thread(it, "Zipline") }
     private val dispatcher = executorService.asCoroutineDispatcher()
 
-    private val manifestUrl = "https://droidkaigi.github.io/conference-app-2022/" +
+    private val manifestUrl = "https://kubode.github.io/conference-app-2022/" +
         "manifest.zipline.json"
 
     private val ziplineLoader = ZiplineLoader(
