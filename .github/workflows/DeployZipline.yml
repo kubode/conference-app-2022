@@ -45,15 +45,12 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v2
-        if: github.ref == 'refs/heads/main'
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           path: './core-zipline/build/zipline/'
-        if: github.ref == 'refs/heads/main'
 
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
-        if: github.ref == 'refs/heads/main'
