@@ -30,11 +30,13 @@ class JsScheduleModifier() : ScheduleModifier {
 }
 
 private fun TimetableItem.modified(): TimetableItem {
+    Logger.v("Modifying $id $targetAudience")
     return if (this is Special &&
         // Day 1 "App bars" Lunch session
         id == TimetableItemId("b8528bb4-284c-424e-8be5-a4c1721e4ba8") &&
         targetAudience == "TBW"
     ) {
+        Logger.v("Modified! $id")
         copy(
             targetAudience = "To be written.",
         )
