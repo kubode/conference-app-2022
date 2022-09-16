@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - kubode/test
 concurrency:
   group: deploy-zipline-${{ github.ref }}
   cancel-in-progress: true
