@@ -9,15 +9,15 @@ import io.github.droidkaigi.confsched2022.model.TimetableItemList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.js.Date
 import kotlin.time.ExperimentalTime
-import kotlin.time.TimeSource
 
 @ExperimentalCoroutinesApi
 class JsScheduleModifier() : ScheduleModifier {
     @OptIn(ExperimentalTime::class)
     override suspend fun modify(schedule: DroidKaigiSchedule): DroidKaigiSchedule {
         Logger.d("Hello JS world!")
-        val now = TimeSource.Monotonic.markNow()
+        val now = Date.now()
         val modified = schedule.copy(
             dayToTimetable = schedule.dayToTimetable.mapValues { timetable ->
                 val modifiedSessions = timetable.value.timetableItems.map { timetableItem ->
@@ -30,7 +30,7 @@ class JsScheduleModifier() : ScheduleModifier {
                 )
             }.toPersistentMap()
         )
-        Logger.d("JS modify took ${now.elapsedNow()}")
+        Logger.d("JS modify took ${Date.now() - now}")
         return modified
     }
 }
