@@ -9,26 +9,30 @@ import io.github.droidkaigi.confsched2022.model.TimetableItemList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 
 @ExperimentalCoroutinesApi
 class JsScheduleModifier() : ScheduleModifier {
+    @OptIn(ExperimentalTime::class)
     override suspend fun modify(schedule: DroidKaigiSchedule): DroidKaigiSchedule {
         Logger.d("Hello JS world!")
-        Logger.v("Trying to modify $schedule")
-        val modified = schedule.copy(
-            dayToTimetable = schedule.dayToTimetable.mapValues { timetable ->
-                val modifiedSessions = timetable.value.timetableItems.map { timetableItem ->
-                    timetableItem.modified()
-                }
-                timetable.value.copy(
-                    timetableItems = TimetableItemList(
-                        modifiedSessions.toPersistentList()
+        val measure = measureTimedValue {
+            schedule.copy(
+                dayToTimetable = schedule.dayToTimetable.mapValues { timetable ->
+                    val modifiedSessions = timetable.value.timetableItems.map { timetableItem ->
+                        timetableItem.modified()
+                    }
+                    timetable.value.copy(
+                        timetableItems = TimetableItemList(
+                            modifiedSessions.toPersistentList()
+                        )
                     )
-                )
-            }.toPersistentMap()
-        )
-        Logger.v("Modified $modified")
-        return modified
+                }.toPersistentMap()
+            )
+        }
+        Logger.d("JS modify took ${measure.duration}")
+        return measure.value
     }
 }
 
