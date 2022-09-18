@@ -17,7 +17,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.measureTimedValue
 
 public interface SessionsZipline {
-    public fun timetableModifier(): Flow<suspend (DroidKaigiSchedule) -> DroidKaigiSchedule>
+    public fun timetableModifier(): Flow<(DroidKaigiSchedule) -> DroidKaigiSchedule>
 }
 
 internal class SessionsZiplineImpl(
@@ -84,14 +84,14 @@ internal class SessionsZiplineImpl(
     }
 
     @OptIn(ExperimentalTime::class) // measureTimedValue
-    override fun timetableModifier(): Flow<suspend (DroidKaigiSchedule) -> DroidKaigiSchedule> {
+    override fun timetableModifier(): Flow<(DroidKaigiSchedule) -> DroidKaigiSchedule> {
         return channelFlow {
             // The loaded JsScheduleModifier takes about 300 ms to execute.
             // Therefore, if a cached loaded JsScheduleModifier is emitted first,
             // the UI will show loading while the JsScheduleModifier is running.
             // Prevent this by emitting the AndroidScheduleModifier first, even if it is cached.
             val androidScheduleModifier = AndroidScheduleModifier()
-            val defaultModifier: suspend (DroidKaigiSchedule) -> DroidKaigiSchedule = { timetable ->
+            val defaultModifier: (DroidKaigiSchedule) -> DroidKaigiSchedule = { timetable ->
                 Logger.v("zipline Android")
                 androidScheduleModifier.modify(timetable)
             }

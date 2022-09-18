@@ -14,8 +14,7 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 class JsScheduleModifier() : ScheduleModifier {
-    @OptIn(ExperimentalTime::class)
-    override suspend fun modify(schedule: DroidKaigiSchedule): DroidKaigiSchedule {
+    override fun modify(schedule: DroidKaigiSchedule): DroidKaigiSchedule {
         Logger.d("Hello JS world!")
         val now = Date.now()
         val modified = schedule.copy(
